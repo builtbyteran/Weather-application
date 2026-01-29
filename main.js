@@ -1,22 +1,36 @@
-var API_KEY = CONFIG.API_KEY;
-var weather = [];
-var forecast = [];
+const { API_KEY } = CONFIG;
+let weather = [];
+let forecast = [];
 
-document.querySelector('.search').addEventListener('click', function () {
-  var city = document.querySelector('#search-query').value;
+document.querySelector('#search-form').addEventListener('submit', (event) => {
+  event.preventDefault();
 
-  document.querySelector('#search-query').value = '';
+  const input = document.querySelector('#search-query');
+  const city = input.value.trim();
+
+  if (!city) {
+    return;
+  }
+
+  input.value = '';
 
   fetchWeatherData(city);
   fetchForecastData(city);
 });
 
+// document.querySelector('.search').addEventListener('click', () => {
+//   const city = document.querySelector('#search-query').value;
+
+//   document.querySelector('#search-query').value = '';
+
+//   fetchWeatherData(city);
+//   fetchForecastData(city);
+// });
+
 var fetchWeatherData = function (city) {
-  const url =
-    'https://api.openweathermap.org/data/2.5/weather?q=' +
-    city +
-    '&limit=1&units=imperial&appid=' +
-    API_KEY;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${
+    city
+  }&limit=1&units=imperial&appid=${API_KEY}`;
 
   fetch(url, {
     method: 'GET',
@@ -29,7 +43,7 @@ var fetchWeatherData = function (city) {
 var addCurrentWeather = function (data) {
   weather = [];
 
-  var weatherData = {
+  const weatherData = {
     temperature: Math.round(data.main.temp),
     city: data.name,
     weather: data.weather[0].main,
@@ -47,7 +61,7 @@ var renderCurrentWeather = function () {
   for (let i = 0; i < weather.length; i++) {
     const weatherData = weather[i];
 
-    var template = `
+    const template = `
       <div class="container-fluid">
         <div class="row" id="render-weather">
           <div class="col">
@@ -70,11 +84,9 @@ var renderCurrentWeather = function () {
 };
 
 var fetchForecastData = function (city) {
-  const url =
-    'https://api.openweathermap.org/data/2.5/forecast?q=' +
-    city +
-    '&limit=1&units=imperial&appid=' +
-    API_KEY;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${
+    city
+  }&limit=1&units=imperial&appid=${API_KEY}`;
 
   fetch(url, {
     method: 'GET',
@@ -87,39 +99,39 @@ var fetchForecastData = function (city) {
 var addForecast = function (data) {
   forecast = [];
 
-  var weekDay = new Intl.DateTimeFormat('en-us', {
+  const weekDay = new Intl.DateTimeFormat('en-us', {
     weekday: 'long',
   });
 
-  var dayOne = {
+  const dayOne = {
     weather: data.list[0].weather[0].main,
     temperature: Math.round(data.list[0].main.temp),
     icon: data.list[0].weather[0].icon,
     day: weekDay.format(new Date(data.list[0].dt_txt)),
   };
 
-  var dayTwo = {
+  const dayTwo = {
     weather: data.list[7].weather[0].main,
     temperature: Math.round(data.list[7].main.temp),
     icon: data.list[7].weather[0].icon,
     day: weekDay.format(new Date(data.list[7].dt_txt)),
   };
 
-  var dayThree = {
+  const dayThree = {
     weather: data.list[15].weather[0].main,
     temperature: Math.round(data.list[15].main.temp),
     icon: data.list[15].weather[0].icon,
     day: weekDay.format(new Date(data.list[15].dt_txt)),
   };
 
-  var dayFour = {
+  const dayFour = {
     weather: data.list[23].weather[0].main,
     temperature: Math.round(data.list[23].main.temp),
     icon: data.list[23].weather[0].icon,
     day: weekDay.format(new Date(data.list[23].dt_txt)),
   };
 
-  var dayFive = {
+  const dayFive = {
     weather: data.list[31].weather[0].main,
     temperature: Math.round(data.list[31].main.temp),
     icon: data.list[31].weather[0].icon,
@@ -141,7 +153,7 @@ var renderForecast = function () {
   for (let i = 0; i < forecast.length; i++) {
     const forecastData = forecast[i];
 
-    var template = `
+    const template = `
       <div class="col" id="render-forecast">
         <h2>${forecastData.weather}</h2>
         <h4>${forecastData.temperature}°</h4>
@@ -154,5 +166,3 @@ var renderForecast = function () {
       .insertAdjacentHTML('beforeend', template);
   }
 };
-
-// https://github.com/projectshft/weather-project/pull/228

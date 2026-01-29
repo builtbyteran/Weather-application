@@ -1,24 +1,28 @@
-.container-fluid{
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.container-fluid {
   margin: 40px 0 0 0;
 }
 
-.input-group{
+.input-group {
   margin: 65px 0 0 0;
 }
 
-#search-query{
+#search-query {
   border-radius: 5px;
   margin: 0 25px 0 25px;
 }
 
-#render-weather .col{
+#render-weather .col {
   height: 200px;
   padding: 0;
   text-align: center;
   width: 250px;
 }
 
-#render-forecast{
+#render-forecast {
   border: 1px solid black;
   padding: 25px;
   margin: -1px 0 0 -1px;
