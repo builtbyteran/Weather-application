@@ -4,29 +4,22 @@ let forecast = [];
 
 document.querySelector('#search-form').addEventListener('submit', (event) => {
   event.preventDefault();
-
   const input = document.querySelector('#search-query');
   const city = input.value.trim();
-
   if (!city) {
     return;
   }
-
   input.value = '';
-
   fetchWeatherData(city);
   fetchForecastData(city);
 });
 
 const fetchWeatherData = (city) => {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${
-    city
-  }&limit=1&units=imperial&appid=${API_KEY}`;
-
-  fetch(url, {
-    method: 'GET',
-    dataType: 'json',
-  })
+  const url = new URL('https://api.openweathermap.org/data/2.5/weather');
+  url.searchParams.set('q', city);
+  url.searchParams.set('units', 'imperial');
+  url.searchParams.set('appid', API_KEY);
+  fetch(url)
     .then((data) => data.json())
     .then((data) => addCurrentWeather(data));
 };
@@ -75,25 +68,24 @@ const renderCurrentWeather = () => {
 };
 
 const fetchForecastData = (city) => {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${
-    city
-  }&limit=1&units=imperial&appid=${API_KEY}`;
-
-  fetch(url, {
-    method: 'GET',
-    dataType: 'json',
-  })
+  const url = new URL('https://api.openweathermap.org/data/2.5/forecast');
+  url.searchParams.set('q', city);
+  url.searchParams.set('units', 'imperial');
+  url.searchParams.set('appid', API_KEY);
+  fetch(url)
     .then((data) => data.json())
     .then((data) => addForecast(data));
 };
 
 const addForecast = (data) => {
+  // Re-initialize forecast every search
   forecast = [];
   const weekDay = new Intl.DateTimeFormat('en-us', {
     weekday: 'long',
   });
   for (let day = 0; day < 5; day += 1) {
-    const index = day * 7;
+    // Every 8 indices lands on 00:00, which uses night icons, I added 4 to have it at 12:00 for daytime icons
+    const index = day * 8 + 4;
     const forecastDay = {
       weather: data.list[index].weather[0].main,
       temperature: Math.round(data.list[index].main.temp),
