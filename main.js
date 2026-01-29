@@ -68,13 +68,11 @@ const addForecast = (data) => {
 
 const renderCurrentWeather = () => {
   document.querySelector('.weather').replaceChildren();
-
   for (let i = 0; i < weather.length; i += 1) {
     const weatherData = weather[i];
-
     const template = `
         <div class="col-12 col-md-8">
-          <div class="card shadow-sm bg-transparent p-4">
+          <div class="bg-transparent p-4">
             <div class="row align-items-center text-center">
               <div class="col-12 col-md-6">
                 <h2>${weatherData.city}</h2>
@@ -100,10 +98,8 @@ const renderCurrentWeather = () => {
 
 const renderForecast = () => {
   document.querySelector('.forecast').replaceChildren();
-
   for (let i = 0; i < forecast.length; i += 1) {
     const forecastData = forecast[i];
-
     const template = `
         <div class="col-6 col-md-2">
           <div class="card shadow-sm bg-transparent text-center py-4 h-100">
@@ -118,21 +114,6 @@ const renderForecast = () => {
           </div>
         </div>
       `;
-
-    // const template = `
-    //     <div
-    //       class="col card shadow-sm bg-transparent align-items-center text-center py-4"
-    //     >
-    //       <h4>${forecastData.temperature}°</h4>
-    //       <h4>${forecastData.day}</h4>
-    //       <h2>${forecastData.weather}</h2>
-    //       <img
-    //         src="https://openweathermap.org/img/wn/${forecastData.icon}@2x.png"
-    //         alt="Forecast icon"
-    //         class="mx-auto d-block"
-    //       />
-    //     </div>
-    //   `;
     document
       .querySelector('.forecast')
       .insertAdjacentHTML('beforeend', template);
