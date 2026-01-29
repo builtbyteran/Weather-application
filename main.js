@@ -18,16 +18,7 @@ document.querySelector('#search-form').addEventListener('submit', (event) => {
   fetchForecastData(city);
 });
 
-// document.querySelector('.search').addEventListener('click', () => {
-//   const city = document.querySelector('#search-query').value;
-
-//   document.querySelector('#search-query').value = '';
-
-//   fetchWeatherData(city);
-//   fetchForecastData(city);
-// });
-
-var fetchWeatherData = function (city) {
+const fetchWeatherData = (city) => {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${
     city
   }&limit=1&units=imperial&appid=${API_KEY}`;
@@ -40,7 +31,7 @@ var fetchWeatherData = function (city) {
     .then((data) => addCurrentWeather(data));
 };
 
-var addCurrentWeather = function (data) {
+const addCurrentWeather = (data) => {
   weather = [];
 
   const weatherData = {
@@ -55,10 +46,10 @@ var addCurrentWeather = function (data) {
   renderCurrentWeather();
 };
 
-var renderCurrentWeather = function () {
+const renderCurrentWeather = () => {
   document.querySelector('.weather').replaceChildren();
 
-  for (let i = 0; i < weather.length; i++) {
+  for (let i = 0; i < weather.length; i += 1) {
     const weatherData = weather[i];
 
     const template = `
@@ -83,7 +74,7 @@ var renderCurrentWeather = function () {
   }
 };
 
-var fetchForecastData = function (city) {
+const fetchForecastData = (city) => {
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${
     city
   }&limit=1&units=imperial&appid=${API_KEY}`;
@@ -96,61 +87,28 @@ var fetchForecastData = function (city) {
     .then((data) => addForecast(data));
 };
 
-var addForecast = function (data) {
+const addForecast = (data) => {
   forecast = [];
-
   const weekDay = new Intl.DateTimeFormat('en-us', {
     weekday: 'long',
   });
-
-  const dayOne = {
-    weather: data.list[0].weather[0].main,
-    temperature: Math.round(data.list[0].main.temp),
-    icon: data.list[0].weather[0].icon,
-    day: weekDay.format(new Date(data.list[0].dt_txt)),
-  };
-
-  const dayTwo = {
-    weather: data.list[7].weather[0].main,
-    temperature: Math.round(data.list[7].main.temp),
-    icon: data.list[7].weather[0].icon,
-    day: weekDay.format(new Date(data.list[7].dt_txt)),
-  };
-
-  const dayThree = {
-    weather: data.list[15].weather[0].main,
-    temperature: Math.round(data.list[15].main.temp),
-    icon: data.list[15].weather[0].icon,
-    day: weekDay.format(new Date(data.list[15].dt_txt)),
-  };
-
-  const dayFour = {
-    weather: data.list[23].weather[0].main,
-    temperature: Math.round(data.list[23].main.temp),
-    icon: data.list[23].weather[0].icon,
-    day: weekDay.format(new Date(data.list[23].dt_txt)),
-  };
-
-  const dayFive = {
-    weather: data.list[31].weather[0].main,
-    temperature: Math.round(data.list[31].main.temp),
-    icon: data.list[31].weather[0].icon,
-    day: weekDay.format(new Date(data.list[31].dt_txt)),
-  };
-
-  forecast.push(dayOne);
-  forecast.push(dayTwo);
-  forecast.push(dayThree);
-  forecast.push(dayFour);
-  forecast.push(dayFive);
-
+  for (let day = 0; day < 5; day += 1) {
+    const index = day * 7;
+    const forecastDay = {
+      weather: data.list[index].weather[0].main,
+      temperature: Math.round(data.list[index].main.temp),
+      icon: data.list[index].weather[0].icon,
+      day: weekDay.format(new Date(data.list[index].dt_txt)),
+    };
+    forecast.push(forecastDay);
+  }
   renderForecast();
 };
 
-var renderForecast = function () {
+const renderForecast = () => {
   document.querySelector('.forecast').replaceChildren();
 
-  for (let i = 0; i < forecast.length; i++) {
+  for (let i = 0; i < forecast.length; i += 1) {
     const forecastData = forecast[i];
 
     const template = `
