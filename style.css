@@ -1,30 +1,5 @@
 body {
+  background: linear-gradient(180deg, #dddddd 0%, #67b3ff 100%);
   font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
 }
-
-/* .container-fluid {
-  margin: 40px 0 0 0;
-}
-
-.input-group {
-  margin: 65px 0 0 0;
-}
-
-#search-query {
-  border-radius: 5px;
-  margin: 0 25px 0 25px;
-}
-
-#render-weather .col {
-  height: 200px;
-  padding: 0;
-  text-align: center;
-  width: 250px;
-}
-
-#render-forecast {
-  border: 1px solid black;
-  padding: 25px;
-  margin: -1px 0 0 -1px;
-  text-align: center;
-} */

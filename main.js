@@ -26,45 +26,14 @@ const fetchWeatherData = (city) => {
 
 const addCurrentWeather = (data) => {
   weather = [];
-
   const weatherData = {
     temperature: Math.round(data.main.temp),
     city: data.name,
     weather: data.weather[0].main,
     icon: data.weather[0].icon,
   };
-
   weather.push(weatherData);
-
   renderCurrentWeather();
-};
-
-const renderCurrentWeather = () => {
-  document.querySelector('.weather').replaceChildren();
-
-  for (let i = 0; i < weather.length; i += 1) {
-    const weatherData = weather[i];
-
-    const template = `
-      <div class="container-fluid">
-        <div class="row" id="render-weather">
-          <div class="col">
-            <h1>${weatherData.temperature}°</h1>
-            <h3>${weatherData.city}</h3>
-            <h4>${weatherData.weather}</h4>
-          </div>
-          <div class="col" id="spacer">
-          </div>
-          <div class="col">
-            <img src="https://openweathermap.org/img/wn/${weatherData.icon}@2x.png" alt="">
-          </div>
-        </div>
-      </div>`;
-
-    document
-      .querySelector('.weather')
-      .insertAdjacentHTML('beforeend', template);
-  }
 };
 
 const fetchForecastData = (city) => {
@@ -97,6 +66,38 @@ const addForecast = (data) => {
   renderForecast();
 };
 
+const renderCurrentWeather = () => {
+  document.querySelector('.weather').replaceChildren();
+
+  for (let i = 0; i < weather.length; i += 1) {
+    const weatherData = weather[i];
+
+    const template = `
+        <div class="col-12 col-md-8">
+          <div class="card shadow-sm bg-transparent p-4">
+            <div class="row align-items-center text-center">
+              <div class="col-12 col-md-6">
+                <h2>${weatherData.city}</h2>
+                <h2>${weatherData.temperature}°</h2>
+                <h3>${weatherData.weather}</h3>
+              </div>
+              <div class="col-12 col-md-6">
+                <img
+                  src="https://openweathermap.org/img/wn/${weatherData.icon}@2x.png"
+                  alt="Weather icon"
+                  class="mx-auto d-block"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    document
+      .querySelector('.weather')
+      .insertAdjacentHTML('beforeend', template);
+  }
+};
+
 const renderForecast = () => {
   document.querySelector('.forecast').replaceChildren();
 
@@ -104,13 +105,34 @@ const renderForecast = () => {
     const forecastData = forecast[i];
 
     const template = `
-      <div class="col" id="render-forecast">
-        <h2>${forecastData.weather}</h2>
-        <h4>${forecastData.temperature}°</h4>
-        <img src="https://openweathermap.org/img/wn/${forecastData.icon}@2x.png" alt="">
-        <h4>${forecastData.day}</h4>
-      </div>`;
+        <div class="col-6 col-md-2">
+          <div class="card shadow-sm bg-transparent text-center py-4 h-100">
+            <h4>${forecastData.day}</h4>
+            <img
+              src="https://openweathermap.org/img/wn/${forecastData.icon}@2x.png"
+              alt="Forecast icon"
+              class="mx-auto d-block"
+            />
+            <h4>${forecastData.temperature}°</h4>
+            <small>${forecastData.weather}</small>
+          </div>
+        </div>
+      `;
 
+    // const template = `
+    //     <div
+    //       class="col card shadow-sm bg-transparent align-items-center text-center py-4"
+    //     >
+    //       <h4>${forecastData.temperature}°</h4>
+    //       <h4>${forecastData.day}</h4>
+    //       <h2>${forecastData.weather}</h2>
+    //       <img
+    //         src="https://openweathermap.org/img/wn/${forecastData.icon}@2x.png"
+    //         alt="Forecast icon"
+    //         class="mx-auto d-block"
+    //       />
+    //     </div>
+    //   `;
     document
       .querySelector('.forecast')
       .insertAdjacentHTML('beforeend', template);
