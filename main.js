@@ -43,6 +43,7 @@ const fetchForecastData = (city) => {
   url.searchParams.set('appid', API_KEY);
   fetch(url)
     .then((data) => data.json())
+    // .then((data) => console.log(data));
     .then((data) => addForecast(data));
 };
 
@@ -53,7 +54,7 @@ const addForecast = (data) => {
     weekday: 'long',
   });
   for (let day = 0; day < 5; day += 1) {
-    // Every 8 indices lands on 00:00, which uses night icons, I added 4 to have it at 12:00 for daytime icons
+    // API gives data every 3 hours, 8 entries is 1 day, I offset it to aim for daytime and skip having multiple same day entries, but the limitation is that the start time varies, so I cannot guarantee daytime icons with my code ablilities right now
     const index = day * 8 + 4;
     const forecastDay = {
       weather: data.list[index].weather[0].main,
